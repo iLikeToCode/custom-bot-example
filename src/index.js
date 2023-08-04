@@ -3,6 +3,11 @@ const fs = require('fs');
 const terminal = require('./terminal')
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] }); 
 
+const { parentPort } = require('worker_threads')
+console.log = (...args) => {
+    parentPort.postMessage({ type: 'message', message: args })
+}
+
 client.fs = {
     async readdirSync(path) {
         return fs.readdirSync(`./bots/chicago-roleplay/${path}`)
